@@ -1,7 +1,7 @@
 ## MyToken Smart Contract
 The MyToken smart contract is an Ethereum-based token contract that extends the functionality of the ERC20 token standard. It provides additional features such as burning tokens, pausing and unpausing token transfers, and allowing users to redeem tokens for specific items.
 
-## Features
+## Features:
 ## Token Information:
 
 Token Name: MyToken
