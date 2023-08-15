@@ -1,0 +1,53 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+
+import "@openzeppelin/contracts@4.9.3/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts@4.9.3/token/ERC20/extensions/ERC20Burnable.sol";
+import "@openzeppelin/contracts@4.9.3/security/Pausable.sol";
+import "@openzeppelin/contracts@4.9.3/access/Ownable.sol";
+
+contract MyToken is ERC20, ERC20Burnable, Pausable, Ownable {
+    constructor() ERC20("MyToken", "MTK") {}
+
+    string [3] public RedeemItems = ['1.Hoodie', '2.Cap', '3.Bagpack'];
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+    function mint(address to, uint256 amount) public onlyOwner {
+        _mint(to, amount);
+    }
+
+    function _beforeTokenTransfer(address from, address to, uint256 amount)
+        internal
+        whenNotPaused
+        override
+    {
+        super._beforeTokenTransfer(from, to, amount);
+    }
+    function redeemtokensForItem(uint256 itemno) external {
+        uint256 redeemAmount; 
+        uint256 shippingCost = 50;
+
+       if(itemno == 1){ redeemAmount = 100;}
+      
+       else if(itemno == 2) { redeemAmount = 200;}
+       
+       else if(itemno == 3) { redeemAmount = 300;}
+      
+       else{
+           revert("Incorrect item number");
+       }
+        require(balanceOf(msg.sender) >= redeemAmount + shippingCost, "Insufficient Tokens for redemption");
+        _burn(msg.sender, redeemAmount);
+    }
+
+    function RedeemableItems() public view returns (string[3] memory) {
+        return RedeemItems;
+    }
+}
